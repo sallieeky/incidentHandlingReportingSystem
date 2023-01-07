@@ -47,7 +47,7 @@
 					</li>
 					<li class="sidebar-item">
 						<a class="sidebar-link" href="#">
-              <i class="align-middle" data-feather="list"></i> <span class="align-middle">List Instansi</span>
+              <i class="align-middle" data-feather="edit"></i> <span class="align-middle">Buat Laporan</span>
             </a>
 					</li>
 				</ul>

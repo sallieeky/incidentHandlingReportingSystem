@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,4 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [DashboardController::class, 'dashboard']);
+Route::get('/', [DashboardController::class, 'dashboard'])->middleware('auth');
+Route::get('/login', [DashboardController::class, 'login'])->name("login")->middleware('guest');
+Route::post('/login', [DashboardController::class, 'loginPost']);
+
+
+// Route::get('/tes', function () {
+// });
