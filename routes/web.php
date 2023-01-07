@@ -15,11 +15,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [DashboardController::class, 'dashboard'])->middleware('auth');
-Route::get('/kelola-laporan', [DashboardController::class, 'kelolaLaporan'])->middleware('auth');
+// group middleware auth
 Route::get('/login', [DashboardController::class, 'login'])->name("login")->middleware('guest');
 Route::post('/login', [DashboardController::class, 'loginPost']);
 
+Route::group(['middleware' => 'auth'], function () {
+  Route::get('/', [DashboardController::class, 'dashboard']);
+  Route::get('/kelola-laporan', [DashboardController::class, 'kelolaLaporan']);
 
-// Route::get('/tes', function () {
-// });
+  Route::post('/laporan/create', [DashboardController::class, 'tambahLaporan']);
+});
+
+
+Route::get('/tes', function () {
+  return view('tes');
+});
