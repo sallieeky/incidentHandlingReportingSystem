@@ -25,6 +25,6 @@ Route::get("/kelurahan/{id}", function ($id) {
 });
 
 Route::get("/incident_count/kelurahan/{id}", function ($id) {
-    $kelurahan = Kelurahan::where("kecamatan_id", $id)->withCount('incident')->get();
+    $kelurahan = Kelurahan::where("kecamatan_id", $id)->withCount('incident')->orderBy('incident_count', 'desc')->get();
     return response()->json($kelurahan);
 });

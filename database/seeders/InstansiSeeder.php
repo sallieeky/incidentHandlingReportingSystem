@@ -29,7 +29,6 @@ class InstansiSeeder extends Seeder
         Instansi::create([
             'nama' => 'Instansi 4',
             'alamat' => 'Jl. Alamat 4',
-            "jumlah_penanganan" => 10,
         ]);
         Instansi::create([
             'nama' => 'Instansi 5',

@@ -29,5 +29,5 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 Route::get('/tes', function () {
-  return view('tes');
+  return now()->subDays(rand(1, 5))->subHours(rand(1, 24))->subMinutes(rand(1, 60));
 });

@@ -46,7 +46,7 @@ class DashboardController extends Controller
         $kecamatan = Kecamatan::withCount('incident')->orderBy('incident_count', 'desc')->with(['kelurahan' => function ($query) {
             $query->withCount('incident')->orderBy('incident_count', 'desc');
         }])->get();
-        $kelurahan = Kelurahan::where("kecamatan_id", 1)->withCount('incident')->orderBy('incident_count', 'desc')->get();
+        $kelurahan = Kelurahan::where("kecamatan_id", $kecamatan->first()->id)->withCount('incident')->orderBy('incident_count', 'desc')->get();
         return view('dashboard', compact('wilayah', 'instansi', 'incident', 'jenis', 'kecamatan', 'kelurahan'));
     }
 
