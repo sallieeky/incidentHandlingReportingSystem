@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Instansi;
+use App\Models\Jenis;
+use App\Models\Kecamatan;
+use App\Models\Kelurahan;
 use App\Models\Wilayah;
 use Illuminate\Http\Request;
 
@@ -29,5 +32,13 @@ class DashboardController extends Controller
         $wilayah = Wilayah::all();
         $instansi = Instansi::orderBy("jumlah_penanganan", 'DESC')->get();
         return view('dashboard', compact('wilayah', 'instansi'));
+    }
+    public function kelolaLaporan()
+    {
+        $instansi = Instansi::all();
+        $kecamatan = Kecamatan::all();
+        $kelurahan = Kelurahan::where("kecamatan_id", 1)->get();
+        $jenis = Jenis::all();
+        return view('laporan', compact('instansi', 'kecamatan', 'kelurahan', 'jenis'));
     }
 }

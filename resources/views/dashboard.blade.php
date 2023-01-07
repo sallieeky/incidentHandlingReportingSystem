@@ -1,4 +1,5 @@
 @extends("base_views.base")
+@section("dashoard_active", "active")
 @section('css')
 <style>
   #map {

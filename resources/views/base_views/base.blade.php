@@ -40,14 +40,14 @@
 					<li class="sidebar-header">
 						Halaman
 					</li>
-					<li class="sidebar-item active">
+					<li class="sidebar-item @yield("dashoard_active")">
 						<a class="sidebar-link" href="/">
               <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
             </a>
 					</li>
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="#">
-              <i class="align-middle" data-feather="edit"></i> <span class="align-middle">Buat Laporan</span>
+					<li class="sidebar-item @yield("laporan_active")">
+						<a class="sidebar-link" href="/kelola-laporan">
+              <i class="align-middle" data-feather="edit"></i> <span class="align-middle">Kelola Laporan</span>
             </a>
 					</li>
 				</ul>

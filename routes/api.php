@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Kelurahan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::get("/kelurahan/{id}", function ($id) {
+    $kelurahan = Kelurahan::where("kecamatan_id", $id)->get();
+    return response()->json($kelurahan);
 });
