@@ -33,7 +33,9 @@ class DashboardController extends Controller
     {
         $wilayah = Wilayah::all();
         $instansi = Instansi::orderBy("jumlah_penanganan", 'DESC')->get();
-        return view('dashboard', compact('wilayah', 'instansi'));
+
+        $incident = Incident::all();
+        return view('dashboard', compact('wilayah', 'instansi', 'incident'));
     }
 
     public function kelolaLaporan()
@@ -69,5 +71,11 @@ class DashboardController extends Controller
         ]);
         Incident::create($request->all());
         return back()->with('success', 'Laporan berhasil ditambahkan');
+    }
+
+    public function hapusLaporan(Request $request)
+    {
+        Incident::find($request->id)->delete();
+        return back()->with('success', 'Laporan berhasil dihapus');
     }
 }

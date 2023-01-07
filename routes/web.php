@@ -24,6 +24,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/kelola-laporan', [DashboardController::class, 'kelolaLaporan']);
 
   Route::post('/laporan/create', [DashboardController::class, 'tambahLaporan']);
+  Route::delete('/laporan/delete', [DashboardController::class, 'hapusLaporan']);
 });
 
 

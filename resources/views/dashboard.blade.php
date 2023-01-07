@@ -93,13 +93,11 @@
 
     // Heatmap data: 500 Points
     function getPoints() {
-    return [
-      new google.maps.LatLng(-0.8752851475025909, 131.25928506457197),
-      new google.maps.LatLng(-0.8785154766872635, 131.2593997642488),
-      new google.maps.LatLng(-0.8764511246303365, 131.2509502213891),
-      new google.maps.LatLng(-0.8764511246303365, 131.2509502213891),
-      new google.maps.LatLng(-0.8764511246303365, 131.2509502212312),
-    ];
+      return [
+        @foreach ($incident as $item)
+          new google.maps.LatLng({{ $item->lat }}, {{ $item->lng }}),          
+        @endforeach
+      ];
     }
 </script>
 

@@ -35,9 +35,18 @@
 @section("content")
 
 <h1 class="h3 mb-3"><strong>Kelola Data</strong> Pelaporan</h1>
+{{-- make alert dismis --}}
 
 <div class="row">
   <div class="col-md-12">
+    
+    @if (session('success'))
+    <div class="alert alert-success alert-dismissible fade show p-3" role="alert">
+      {{ session('success') }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+
     <div class="card">
       <div class="card-body">
         <form action="/laporan/create" method="POST">
@@ -178,16 +187,9 @@
                   </a>
                 </td>
                 <td>
-                  <a href="#" class="btn btn-sm btn-warning">
-                    <i data-feather="edit"></i>
-                  </a>
-                  <form action="#" method="POST" class="d-inline">
-                    @csrf
-                    @method('delete')
-                    <button type="submit" class="btn btn-sm btn-danger">
-                      <i data-feather="trash-2"></i>
-                    </button>
-                  </form>
+                  <button class="btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#hapusModal{{ $i->id }}">
+                    <i data-feather="trash-2"></i>
+                  </button>
                 </td>
               </tr>
             @endforeach
@@ -203,20 +205,70 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modal-pick-location">Pilih Lokasi</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-bs-label="Close">
         </button>
       </div>
       <div class="modal-body">
         <div id="map" style="width: 100%; height: 400px;"></div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
         <button type="button" class="btn btn-primary" id="pick-location">Pilih Lokasi</button>
       </div>
     </div>
   </div>
-</div>  
+</div>
+
+@foreach ($incident as $i)
+  {{-- make modal hapus data --}}
+  <div class="modal fade" id="hapusModal{{ $i->id }}" tabindex="-1" aria-labelledby="hapusModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="hapusModalLabel">Hapus Data</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-bs-label="Close">
+          </button>
+        </div>
+        <div class="modal-body">
+          Apakah anda yakin akan menghapus data ini?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
+          <form action="/laporan/delete" method="POST" class="d-inline">
+            @csrf
+            @method('delete')
+            <button type="submit" class="btn btn-primary" name="id" value="{{ $i->id }}">Ya</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{-- make modal edit data --}}
+  <div class="modal fade" id="editModal{{ $i->id }}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel">Edit Data</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-bs-label="Close">
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="#" method="POST">
+            @csrf
+            @method('patch')
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="nama">Nama Instansi / Dinas</label>
+                  <select name="instansi_id" id="instansi_id" class="form-control @error('instansi_id') is-invalid @enderror" required>
+                    <option value="">Pilih Instansi / Dinas</option>
+                    @foreach ($instansi as $i)
+                      <option value="{{ $i->id }}">{{ $i->nama }}</option>
+                    @endforeach
+                  </select>
+@endforeach
+
 
 @endsection
 
