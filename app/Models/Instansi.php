@@ -9,4 +9,9 @@ class Instansi extends Model
 {
     use HasFactory;
     protected $guarded = ["id"];
+
+    public function incident()
+    {
+        return $this->hasMany(Incident::class);
+    }
 }

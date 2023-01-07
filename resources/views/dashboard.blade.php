@@ -106,81 +106,17 @@
 
 <h1 class="h3 mb-3"><strong>Statistik</strong> Penanganan Insiden</h1>
 
-<div class="row d-flex">
-  <div class="col-xl-6 col-xxl-5 d-flex">
-    <div class="w-100">
-      {{-- 4 CARD SECTION --}}
-      <div class="row">
-        <div class="col-sm-6">
-          <div class="card">
-            <div class="card-body">
-              <div class="row">
-                <div class="col mt-0">
-                  <h5 class="card-title">Laporan</h5>
-                </div>
-                <div class="col-auto">
-                  <div class="stat text-primary">
-                    <i class="align-middle" data-feather="file-text"></i>
-                  </div>
-                </div>
-              </div>
-              <h1 class="mt-1 mb-3">2.382</h1>
-              <div class="mb-0">
-                <span class="text-muted">Since last week</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-6">
-          <div class="card">
-            <div class="card-body">
-              <div class="row">
-                <div class="col mt-0">
-                  <h5 class="card-title">Pengaduan</h5>
-                </div>
-                <div class="col-auto">
-                  <div class="stat text-primary">
-                    <i class="align-middle" data-feather="file-text"></i>
-                  </div>
-                </div>
-              </div>
-              <h1 class="mt-1 mb-3">21.300</h1>
-              <div class="mb-0">
-                <span class="text-muted">Since last week</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-12">
-          <div class="card">
-            <div class="card-body">
-              <div class="row">
-                <div class="col mt-0">
-                  <h5 class="card-title">Informasi</h5>
-                </div>
-                <div class="col-auto">
-                  <div class="stat text-primary">
-                    <i class="align-middle" data-feather="file-text"></i>
-                  </div>
-                </div>
-              </div>
-              <h1 class="mt-1 mb-3">14.212</h1>
-              <div class="mb-0">
-                <span class="text-muted">Since last week</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      {{-- END 4 CARD SECTION --}}
-    </div>
-  </div>
-  
-  {{-- INSIDEN BASIS WILAYAH --}}
-  <div class="col-xl-6 col-xxl-7">
+<div class="row">
+  <div class="col-xl-12 col-xxl-12">
     <div class="card flex-fill w-100">
-      <div class="card-header">
+      <div class="card-header d-flex justify-content-between">
         <h5 class="card-title mb-0">Penanganan Insiden Berbasis Wilayah</h5>
+        {{-- make select kecamatan --}}
+        <select class="form-control w-25" id="select-kecamatan" name="wilayah">
+          @foreach ($kecamatan as $item)
+            <option value="{{ $item->id }}">{{ $item->nama }}</option>
+          @endforeach
+        </select>
       </div>
       <div class="card-body d-flex w-100">
         <div class="align-self-center chart chart-lg">
@@ -189,8 +125,26 @@
       </div>
     </div>
   </div>
-  {{-- INSIDEN BASIS WILAYAH --}}
 </div>
+
+{{-- <div class="row d-flex">
+  <div class="col-xl-6 col-xxl-5 d-flex">
+    <div class="w-100">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title mb-0">Laporan Berdasarkan Jenis</h5>
+            </div>
+            <div class="card-body">
+              <canvas id="grafik-jenis"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> --}}
 
 <div class="row">
   <div class="col-12">
@@ -202,20 +156,18 @@
         <table id="datatables-reponsive" class="table table-striped" style="width:100%">
           <thead>
             <tr>
-              <th>Urutan</th>
+              <th>No</th>
               <th>Nama Instansi / Dinas</th>
-              <th>Alamat</th>
-              <th>Jumlah Penanganan Insiden</th>
+              <th>Jumlah Penanganan</th>
             </tr>
           </thead>
           <tbody>
-            @foreach ($instansi as $is)
-            <tr>
-              <td>{{ $loop->iteration }}</td>
-              <td>{{ $is->nama }}</td>
-              <td>{{ $is->alamat }}</td>
-              <td>{{ $is->jumlah_penanganan }}</td>
-            </tr>
+            @foreach ($instansi as $i)
+              <tr>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ $i->nama }}</td>
+                <td>{{ $i->incident_count }}</td>
+              </tr>
             @endforeach
           </tbody>
         </table>
@@ -241,7 +193,7 @@
   <div class="col-xl-6 col-xxl-6">
     <div class="card flex-fill w-100">
       <div class="card-header">
-        <h5 class="card-title mb-0">Rata-rata Waktu Penanganan Insiden Berdasarkan Petugas Dispatcher</h5>
+        <h5 class="card-title mb-0">Rata-rata Waktu Penanganan Insiden Berdasarkan Instansi / Dinas</h5>
       </div>
       <div class="card-body d-flex w-100">
         <div class="align-self-center chart chart-lg">
@@ -275,18 +227,26 @@
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     // Bar chart
-    new Chart(document.getElementById("chart-wilayah"), {
+    var chart_wilayah =  new Chart(document.getElementById("chart-wilayah"), {
       type: "bar",
       data: {
-        labels: [@foreach ($wilayah as $wl) "{{ $wl->nama }}", @endforeach],
+        labels: [
+          @foreach ($kelurahan as $kel)
+            "{{ $kel->nama }}",
+          @endforeach
+        ],
         datasets: [{
-          label: "Tahun Ini",
+          label: "Total Penanganan Insiden",
           backgroundColor: window.theme.primary,
           borderColor: window.theme.primary,
           hoverBackgroundColor: window.theme.primary,
           hoverBorderColor: window.theme.primary,
-          data: [20, 13, 19, 9, 23, 20, 13, 19, 9, 23],
-          barPercentage: .75,
+          data: [
+            @foreach ($kelurahan as $kel)
+              {{ $kel->incident_count }},
+            @endforeach
+          ],
+          barPercentage: .5,
           categoryPercentage: .5
         }]
       },
@@ -302,18 +262,54 @@
             },
             stacked: false,
             ticks: {
-              stepSize: 20
+              stepSize: 5
+            },
+            scaleLabel: {
+              display: true,
+              labelString: 'Jumlah Penanganan Insiden'
             }
           }],
           xAxes: [{
             stacked: false,
             gridLines: {
               color: "transparent"
+            },
+            scaleLabel: {
+              display: true,
+              labelString: 'Kelurahan'
             }
           }]
         }
       }
     });
+
+      // get kelurahan api kalau select-kecamatan diubah
+      $('#select-kecamatan').on('change', function() {
+      var kecamatan_id = $(this).val();
+      if (kecamatan_id) {
+        $.ajax({
+          url: '/api/incident_count/kelurahan/' + kecamatan_id,
+          type: "GET",
+          dataType: "json",
+          success: function(data) {
+            // store the result data map to array
+            var data_kelurahan = [];
+            var data_kelurahan_label = [];
+            $.each(data, function(key, value) {
+              data_kelurahan.push(value.incident_count);
+              data_kelurahan_label.push(value.nama);
+            });
+            // update chart
+            chart_wilayah.data.datasets[0].data = data_kelurahan;
+            chart_wilayah.data.labels = data_kelurahan_label;
+            chart_wilayah.update();
+          }
+        });
+      } else {
+        $('select[name="kelurahan_id"]').empty();
+      }
+    });
+
   });
 </script>
 {{-- END CHART WILAYAH --}}
@@ -325,15 +321,23 @@
     new Chart(document.getElementById("chart-waktu-jenis"), {
       type: "bar",
       data: {
-        labels: ["Jenis 1", "Jenis 2", "Jenis 3", "Jenis 4", "Jenis 5"],
+        labels: [
+          @foreach ($jenis as $jns)
+            "{{ $jns->nama }}",
+          @endforeach
+        ],
         datasets: [{
-          label: "Tahun Ini",
+          label: "Rata-rata Waktu Penanganan (jam))",
           backgroundColor: window.theme.primary,
           borderColor: window.theme.primary,
           hoverBackgroundColor: window.theme.primary,
           hoverBorderColor: window.theme.primary,
-          data: [20, 13, 19, 9, 23],
-          barPercentage: .75,
+          data: [
+            @foreach ($jenis as $jns)
+              {{ $jns->mean_time }},
+            @endforeach
+          ],
+          barPercentage: .5,
           categoryPercentage: .5
         }]
       },
@@ -350,12 +354,20 @@
             stacked: false,
             ticks: {
               stepSize: 20
+            },
+            scaleLabel: {
+              display: true,
+              labelString: 'Rata-rata Waktu Penanganan (jam)'
             }
           }],
           xAxes: [{
             stacked: false,
             gridLines: {
               color: "transparent"
+            },
+            scaleLabel: {
+              display: true,
+              labelString: 'Jenis Insiden'
             }
           }]
         }
@@ -372,15 +384,23 @@
     new Chart(document.getElementById("chart-waktu-petugas"), {
       type: "bar",
       data: {
-        labels: ["Petugas 1", "Petugas 2", "Petugas 3", "Petugas 4", "Petugas 5"],
+        labels: [
+          @foreach ($instansi as $ins)
+            "{{ $ins->nama }}",
+          @endforeach
+        ],
         datasets: [{
-          label: "Tahun Ini",
+          label: "Rata-rata Waktu Penanganan (jam)",
           backgroundColor: window.theme.primary,
           borderColor: window.theme.primary,
           hoverBackgroundColor: window.theme.primary,
           hoverBorderColor: window.theme.primary,
-          data: [20, 13, 19, 9, 23],
-          barPercentage: .75,
+          data: [
+            @foreach ($instansi as $ins)
+              {{ $ins->mean_time }},
+            @endforeach
+          ],
+          barPercentage: .5,
           categoryPercentage: .5
         }]
       },
@@ -397,12 +417,20 @@
             stacked: false,
             ticks: {
               stepSize: 20
+            },
+            scaleLabel: {
+              display: true,
+              labelString: 'Rata-rata Waktu Penanganan (jam)'
             }
           }],
           xAxes: [{
             stacked: false,
             gridLines: {
               color: "transparent"
+            },
+            scaleLabel: {
+              display: true,
+              labelString: 'Instansi'
             }
           }]
         }
@@ -411,5 +439,53 @@
   });
 </script>
 {{-- END CHART WAKTU PETUGAS --}}
+
+{{-- CHART POLAR JENIS --}}
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Polar Area chart
+    new Chart(document.getElementById("grafik-jenis"), {
+      type: "polarArea",
+      data: {
+        labels: [
+          @foreach ($jenis as $jn)
+            "{{ $jn->nama }}",
+          @endforeach
+        ],
+        datasets: [{
+          label: "Model S",
+          data: [
+            @foreach ($jenis as $jn)
+              {{ $jn->incident_count }},
+            @endforeach
+          ],
+          backgroundColor: [
+            window.theme.primary,
+            window.theme.success,
+            window.theme.danger,
+            window.theme.warning,
+            window.theme.info
+          ]
+        }]
+      },
+      options: {
+        maintainAspectRatio: true,
+        legend: {
+          display: true
+        },
+        scale: {
+          ticks: {
+            beginAtZero: true
+          },
+        }
+      }
+    });
+  });
+</script>
+{{-- END CHART PO:AR JENIS --}}
+
+<script>
+
+</script>
 
 @endsection

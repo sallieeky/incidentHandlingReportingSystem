@@ -32,10 +32,22 @@ class DashboardController extends Controller
     public function dashboard()
     {
         $wilayah = Wilayah::all();
-        $instansi = Instansi::orderBy("jumlah_penanganan", 'DESC')->get();
-
         $incident = Incident::all();
-        return view('dashboard', compact('wilayah', 'instansi', 'incident'));
+
+        $instansi = Instansi::with("incident")->withCount('incident')->orderBy('incident_count', 'desc')->orderBy('incident_count', 'desc')->get();
+        foreach ($instansi as $key => $value) {
+            $instansi[$key]->mean_time = $value->incident->avg('lama_penanganan');
+        }
+
+        $jenis = Jenis::with("incident")->withCount('incident')->orderBy('incident_count', 'desc')->get();
+        foreach ($jenis as $key => $value) {
+            $jenis[$key]->mean_time = $value->incident->avg('lama_penanganan');
+        }
+        $kecamatan = Kecamatan::withCount('incident')->orderBy('incident_count', 'desc')->with(['kelurahan' => function ($query) {
+            $query->withCount('incident')->orderBy('incident_count', 'desc');
+        }])->get();
+        $kelurahan = Kelurahan::where("kecamatan_id", 1)->withCount('incident')->orderBy('incident_count', 'desc')->get();
+        return view('dashboard', compact('wilayah', 'instansi', 'incident', 'jenis', 'kecamatan', 'kelurahan'));
     }
 
     public function kelolaLaporan()

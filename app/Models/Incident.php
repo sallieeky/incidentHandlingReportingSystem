@@ -9,7 +9,7 @@ class Incident extends Model
 {
     use HasFactory;
     protected $guarded = ["id"];
-    protected $appends = ["format_kejadian", "format_penanganan"];
+    protected $appends = ["format_kejadian", "format_penanganan", "lama_penanganan"];
 
     public function instansi()
     {
@@ -35,5 +35,10 @@ class Incident extends Model
     public function getFormatPenangananAttribute()
     {
         return date("D, d-m-Y H:i", strtotime($this->waktu_penanganan));
+    }
+    public function getLamaPenangananAttribute()
+    {
+        $lama = (strtotime($this->waktu_penanganan) - strtotime($this->waktu_kejadian)) / 3600;
+        return round($lama, 2);
     }
 }

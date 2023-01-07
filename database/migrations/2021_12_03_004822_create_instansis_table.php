@@ -17,7 +17,6 @@ class CreateInstansisTable extends Migration
             $table->id();
             $table->string("nama");
             $table->string("alamat");
-            $table->integer("jumlah_penanganan")->default(0);
             $table->timestamps();
         });
     }
