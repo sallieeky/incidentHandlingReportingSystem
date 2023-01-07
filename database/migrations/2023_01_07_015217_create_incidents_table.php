@@ -18,7 +18,7 @@ class CreateIncidentsTable extends Migration
             $table->integer("instansi_id"); // id instansi yang menangani kejadian
             $table->integer("kecamatan_id");
             $table->integer("kelurahan_id");
-            $table->string("jenis");
+            $table->integer("jenis_id");
             $table->string("lat");
             $table->string("lng");
             $table->dateTime("waktu_kejadian");

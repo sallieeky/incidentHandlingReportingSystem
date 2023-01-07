@@ -76,7 +76,7 @@
             <div class="col-md-3">
               <div class="form-group mb-3">
                 <label for="jenis">Jenis Insiden</label>
-                <select class="form-control" id="jenis" required name="jenis">
+                <select class="form-control" id="jenis" required name="jenis_id">
                   @foreach ($jenis as $j)
                     <option value="{{ $j->id }}">{{ $j->nama }}</option>
                   @endforeach
@@ -145,19 +145,52 @@
   <div class="col-12">
     <div class="card">
       <div class="card-header">
-        <h5 class="card-title">Penanganan Insiden Berdasarkan Instansi atau Dinas</h5>
+        <h5 class="card-title">Daftar Penanganan Insiden</h5>
       </div>
       <div class="card-body">
         <table id="datatables-reponsive" class="table table-striped" style="width:100%">
           <thead>
             <tr>
-              <th>Urutan</th>
+              <th>No</th>
               <th>Nama Instansi / Dinas</th>
-              <th>Alamat</th>
-              <th>Jumlah Penanganan Insiden</th>
+              <th>Kecamatan</th>
+              <th>Kelurahan</th>
+              <th>Jenis Insiden</th>
+              <th>Waktu Kejadian</th>
+              <th>Waktu Penanganan</th>
+              <th>Lokasi</th>
+              <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
+            @foreach ($incident as $i)
+              <tr>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ $i->instansi->nama }}</td>
+                <td>{{ $i->kecamatan->nama }}</td>
+                <td>{{ $i->kelurahan->nama }}</td>
+                <td>{{ $i->jenis->nama }}</td>
+                <td>{{ $i->format_kejadian }}</td>
+                <td>{{ $i->format_penanganan }}</td>
+                <td>
+                  <a href="https://www.google.com/maps/search/?api=1&query={{ $i->lat }},{{ $i->lng }}" target="_blank" class="btn btn-sm btn-primary">
+                    <i data-feather="map-pin"></i>
+                  </a>
+                </td>
+                <td>
+                  <a href="#" class="btn btn-sm btn-warning">
+                    <i data-feather="edit"></i>
+                  </a>
+                  <form action="#" method="POST" class="d-inline">
+                    @csrf
+                    @method('delete')
+                    <button type="submit" class="btn btn-sm btn-danger">
+                      <i data-feather="trash-2"></i>
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            @endforeach
           </tbody>
         </table>
       </div>

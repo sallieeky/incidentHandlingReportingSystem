@@ -53,7 +53,7 @@ class DashboardController extends Controller
             "instansi_id" => "required",
             "kecamatan_id" => "required",
             "kelurahan_id" => "required",
-            "jenis" => "required",
+            "jenis_id" => "required",
             "lat" => "required",
             "lng" => "required",
             "waktu_kejadian" => "required",
