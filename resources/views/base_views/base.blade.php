@@ -50,6 +50,12 @@
               <i class="align-middle" data-feather="edit"></i> <span class="align-middle">Kelola Laporan</span>
             </a>
 					</li>
+					{{-- Logout --}}
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="/logout">
+							<i class="align-middle" data-feather="log-out"></i> <span class="align-middle">Logout</span>
+						</a>
+					</li>
 				</ul>
 			</div>
 		</nav>

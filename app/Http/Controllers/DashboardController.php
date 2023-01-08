@@ -36,12 +36,12 @@ class DashboardController extends Controller
 
         $instansi = Instansi::with("incident")->withCount('incident')->orderBy('incident_count', 'desc')->orderBy('incident_count', 'desc')->get();
         foreach ($instansi as $key => $value) {
-            $instansi[$key]->mean_time = $value->incident->avg('lama_penanganan');
+            $instansi[$key]->mean_time = round($value->incident->avg('lama_penanganan'), 2);
         }
 
         $jenis = Jenis::with("incident")->withCount('incident')->orderBy('incident_count', 'desc')->get();
         foreach ($jenis as $key => $value) {
-            $jenis[$key]->mean_time = $value->incident->avg('lama_penanganan');
+            $jenis[$key]->mean_time = round($value->incident->avg('lama_penanganan'), 2);
         }
         $kecamatan = Kecamatan::withCount('incident')->orderBy('incident_count', 'desc')->with(['kelurahan' => function ($query) {
             $query->withCount('incident')->orderBy('incident_count', 'desc');

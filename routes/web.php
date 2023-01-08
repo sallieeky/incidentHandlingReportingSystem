@@ -25,6 +25,11 @@ Route::group(['middleware' => 'auth'], function () {
 
   Route::post('/laporan/create', [DashboardController::class, 'tambahLaporan']);
   Route::delete('/laporan/delete', [DashboardController::class, 'hapusLaporan']);
+
+  Route::get('/logout', function () {
+    auth()->logout();
+    return redirect('/login');
+  });
 });
 
 

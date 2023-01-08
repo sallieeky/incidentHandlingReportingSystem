@@ -127,8 +127,8 @@
   </div>
 </div>
 
-{{-- <div class="row d-flex">
-  <div class="col-xl-6 col-xxl-5 d-flex">
+<div class="row d-flex">
+  <div class="col-xl-12 col-xxl-12 d-flex">
     <div class="w-100">
       <div class="row">
         <div class="col-sm-12">
@@ -141,36 +141,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div> --}}
-
-<div class="row">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-header">
-        <h5 class="card-title">Penanganan Insiden Berdasarkan Instansi atau Dinas</h5>
-      </div>
-      <div class="card-body">
-        <table id="datatables-reponsive" class="table table-striped" style="width:100%">
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>Nama Instansi / Dinas</th>
-              <th>Jumlah Penanganan</th>
-            </tr>
-          </thead>
-          <tbody>
-            @foreach ($instansi as $i)
-              <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td>{{ $i->nama }}</td>
-                <td>{{ $i->incident_count }}</td>
-              </tr>
-            @endforeach
-          </tbody>
-        </table>
       </div>
     </div>
   </div>
@@ -199,6 +169,36 @@
         <div class="align-self-center chart chart-lg">
           <canvas id="chart-waktu-petugas"></canvas>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title">Penanganan Insiden Berdasarkan Instansi atau Dinas</h5>
+      </div>
+      <div class="card-body">
+        <table id="datatables-reponsive" class="table table-striped" style="width:100%">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Nama Instansi / Dinas</th>
+              <th>Jumlah Penanganan</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach ($instansi as $i)
+              <tr>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ $i->nama }}</td>
+                <td>{{ $i->incident_count }}</td>
+              </tr>
+            @endforeach
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -258,11 +258,11 @@
         scales: {
           yAxes: [{
             gridLines: {
-              display: false
+              display: true
             },
             stacked: false,
             ticks: {
-              stepSize: 5
+              stepSize: 1
             },
             scaleLabel: {
               display: true,
@@ -349,7 +349,7 @@
         scales: {
           yAxes: [{
             gridLines: {
-              display: false
+              display: true,
             },
             stacked: false,
             ticks: {
@@ -412,7 +412,7 @@
         scales: {
           yAxes: [{
             gridLines: {
-              display: false
+              display: true
             },
             stacked: false,
             ticks: {
@@ -431,7 +431,9 @@
             scaleLabel: {
               display: true,
               labelString: 'Instansi'
-            }
+            },
+            // hide x-axis label
+            display: false
           }]
         }
       }
@@ -443,9 +445,8 @@
 {{-- CHART POLAR JENIS --}}
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    // Polar Area chart
     new Chart(document.getElementById("grafik-jenis"), {
-      type: "polarArea",
+      type: "pie",
       data: {
         labels: [
           @foreach ($jenis as $jn)
@@ -453,7 +454,6 @@
           @endforeach
         ],
         datasets: [{
-          label: "Model S",
           data: [
             @foreach ($jenis as $jn)
               {{ $jn->incident_count }},
@@ -465,27 +465,24 @@
             window.theme.danger,
             window.theme.warning,
             window.theme.info
-          ]
+          ],
+          borderColor: "transparent"
         }]
       },
       options: {
         maintainAspectRatio: true,
         legend: {
-          display: true
-        },
-        scale: {
-          ticks: {
-            beginAtZero: true
+          display: true,
+          position: 'bottom',
+          labels: {
+            padding: 25,
+            boxWidth: 20
           },
-        }
+        },
       }
     });
   });
 </script>
-{{-- END CHART PO:AR JENIS --}}
-
-<script>
-
-</script>
+{{-- END CHART POLAR JENIS --}}
 
 @endsection

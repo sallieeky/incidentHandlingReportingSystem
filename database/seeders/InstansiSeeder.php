@@ -14,25 +14,29 @@ class InstansiSeeder extends Seeder
      */
     public function run()
     {
-        Instansi::create([
-            'nama' => 'Instansi 1',
-            'alamat' => 'Jl. Alamat 1',
-        ]);
-        Instansi::create([
-            'nama' => 'Instansi 2',
-            'alamat' => 'Jl. Alamat 2',
-        ]);
-        Instansi::create([
-            'nama' => 'Instansi 3',
-            'alamat' => 'Jl. Alamat 3',
-        ]);
-        Instansi::create([
-            'nama' => 'Instansi 4',
-            'alamat' => 'Jl. Alamat 4',
-        ]);
-        Instansi::create([
-            'nama' => 'Instansi 5',
-            'alamat' => 'Jl. Alamat 5',
-        ]);
+        // Buat list nama instansi/dinas dispatcher yang ada di manokwari
+        $instansi = [
+            "Dinas Pendidikan",
+            "Dinas Sosial",
+            "Dinas Pekerjaan Umum",
+            "Dinas Pemberdayaan Masyarakat dan Kampung",
+            "Dinas Penanaman Modal",
+            "Dinas Kesehatan",
+            "Dinas Tenaga Kerja dan Transmigrasi",
+            "Dinas Pemberdayaan Perempuan dan Perlindungan Anak",
+            "Dinas Perhubungan",
+            "Dinas Kelautan dan Perikanan",
+            "Dinas Kehutanan",
+            "Dinas Pertanian dan Ketahanan Pangan",
+            "Dinas Lingkungan Hidup dan Pertanahan",
+        ];
+
+        // Looping untuk membuat data instansi
+        foreach ($instansi as $key => $value) {
+            Instansi::create([
+                "nama" => $value,
+                "alamat" => "Jl. Raya Manokwari No. 1",
+            ]);
+        }
     }
 }
