@@ -221,7 +221,10 @@
 
 @section('script')
 <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUZC0h75vc7XWnralRk_NqIXmFkP5_2Uw&callback=initMap&libraries=visualization&v=weekly" async></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAhTc3UDPSZeKoxGUDYPuoyhud69LB-co&callback=initMap&libraries=visualization&v=weekly" async></script>
+{{-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUZC0h75vc7XWnralRk_NqIXmFkP5_2Uw&callback=initMap&libraries=visualization&v=weekly" async></script> --}}
+{{-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAhTc3UDPSZeKoxGUDYPuoyhud69LB-co&amp;libraries=places&amp;callback=initMap"> --}}
+</script>
 
 {{-- CHART WILAYAH --}}
 <script>
